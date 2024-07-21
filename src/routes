@@ -1,0 +1,8 @@
+const express = require("express");
+const ChampionsController = require("./controllers/ChampionsController");
+const router = express.Router();
+
+router.get("/champions", ChampionsController.getAll);
+router.get("/champions/:id", ChampionsController.getById);
+
+module.exports = router;
