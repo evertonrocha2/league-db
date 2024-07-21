@@ -1,5 +1,6 @@
 const axios = require("axios");
 const connection = require("../db");
+const { promisify } = require("util");
 
 const saveChampionsToDB = async () => {
   try {
@@ -25,4 +26,17 @@ const saveChampionsToDB = async () => {
   }
 };
 
-module.exports = { saveChampionsToDB };
+const queryAsync = promisify(connection.query).bind(connection);
+
+const getById = async (id) => {
+  try {
+    const result = await queryAsync("SELECT * FROM champions WHERE id = ?", [
+      id,
+    ]);
+    return result[0];
+  } catch (err) {
+    throw new Error(`Failed to fetch champion by id: ${err.message}`);
+  }
+};
+
+module.exports = { saveChampionsToDB, getById };
