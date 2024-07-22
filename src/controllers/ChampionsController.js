@@ -6,9 +6,15 @@ const {
 
 module.exports = {
   getAll: async (req, res) => {
-    await saveChampionsToDB();
-    const champions = await getAllChampions();
-    res.json(champions);
+    try {
+      await saveChampionsToDB();
+      const champions = await getAllChampions();
+      res.json(champions);
+    } catch (err) {
+      res
+        .status(500)
+        .json({ error: "Failed to retrieve champions", details: err.message });
+    }
   },
   getById: async (req, res) => {
     try {
