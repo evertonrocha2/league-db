@@ -1,9 +1,14 @@
-const { saveChampionsToDB, getById } = require("../services/ChampionsService");
+const {
+  saveChampionsToDB,
+  getById,
+  getAllChampions,
+} = require("../services/ChampionsService");
 
 module.exports = {
   getAll: async (req, res) => {
     await saveChampionsToDB();
-    res.status(200).json("All champions are loaded");
+    const champions = await getAllChampions();
+    res.json(champions);
   },
   getById: async (req, res) => {
     try {

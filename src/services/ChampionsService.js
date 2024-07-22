@@ -10,11 +10,11 @@ const saveChampionsToDB = async () => {
     const champions = response.data.data;
     for (let key in champions) {
       const champion = champions[key];
-      const { id, name, title, info, blurb } = champion;
+      const { name, title, info, blurb } = champion;
       const infoString = JSON.stringify(info);
       connection.query(
-        "INSERT INTO champions (id, name, title, info, blurb) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = VALUES(name), title = VALUES(title), info = VALUES(info), blurb = VALUES(blurb)",
-        [id, name, title, infoString, blurb],
+        "INSERT INTO champions (name, title, info, blurb) VALUES ( ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = VALUES(name), title = VALUES(title), info = VALUES(info), blurb = VALUES(blurb)",
+        [name, title, infoString, blurb],
         (err, result) => {
           if (err) throw err;
           console.log(`Champion ${name} added to the database`);
@@ -39,4 +39,12 @@ const getById = async (id) => {
   }
 };
 
-module.exports = { saveChampionsToDB, getById };
+const getAllChampions = async () => {
+  try {
+    const results = await queryAsync("SELECT * FROM champions");
+    return results;
+  } catch (err) {
+    throw new Error(`Failed to fetch all champions: ${err.message}`);
+  }
+};
+module.exports = { saveChampionsToDB, getById, getAllChampions };
