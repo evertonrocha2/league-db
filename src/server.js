@@ -1,16 +1,10 @@
-require("dotenv").config({ path: ".env" });
-
 const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const routes = require("./routes");
+const app = express();
+const playerRoutes = require("./routes"); // Certifique-se de que o caminho está correto
 
-const server = express();
+app.use("/api", playerRoutes);
 
-server.use(cors());
-server.use(bodyParser.json());
-server.use("/api", routes);
-
-server.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

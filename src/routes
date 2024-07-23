@@ -1,8 +1,9 @@
 const express = require("express");
-const ChampionsController = require("./controllers/ChampionsController");
+const ChampionsController = require("./controllers/ChampionsController"); // Certifique-se de que o caminho está correto
 const router = express.Router();
 
 router.get("/champions", ChampionsController.getAll);
 router.get("/champions/:id", ChampionsController.getById);
+router.get("/players", ChampionsController.fetchPlayers); // Use o nome correto do método exportado
 
 module.exports = router;
