@@ -1,6 +1,18 @@
 const axios = require("axios");
+const { saveItemsToDB } = require("../services/ItemsService");
 
 module.exports = {
+  saveToDb: async (req, res) => {
+    try {
+      const response = await saveItemsToDB();
+      res.json(response);
+    } catch (err) {
+      res.status(500).json({
+        error: "Failed to save items to db",
+        details: err.message,
+      });
+    }
+  },
   fetchItems: async (req, res) => {
     try {
       const version = "14.14.1";

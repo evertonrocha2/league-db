@@ -1,11 +1,12 @@
 const express = require("express");
 const ChampionsController = require("./controllers/ChampionsController");
-const ItemsController = require("./controllers/ItemsController"); // Certifique-se de que o caminho está correto
+const ItemsController = require("./controllers/ItemsController");
 const router = express.Router();
 
 router.get("/champions", ChampionsController.getAll);
 router.get("/champions/:id", ChampionsController.getById);
 router.get("/players", ChampionsController.fetchPlayers);
-router.get("/items", ItemsController.fetchItems); // Use o nome correto do método exportado
+router.get("/items", ItemsController.fetchItems);
+router.get("/items/save", ItemsController.saveToDb);
 
 module.exports = router;
