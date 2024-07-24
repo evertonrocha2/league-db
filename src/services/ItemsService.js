@@ -17,12 +17,13 @@ const saveItemsToDB = async () => {
     const items = await fetchItems();
     for (let key in items) {
       const item = items[key];
+      const itemId = key; 
       const { name, description, image } = item;
       console.log(`Inserting item: ${name}`);
       try {
         await queryAsync(
-          "INSERT INTO items (name, description, image) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE description = VALUES(description), image = VALUES(image)",
-          [name, description, JSON.stringify(image)]
+          "INSERT INTO items (id, name, description, image) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE description = VALUES(description), image = VALUES(image)",
+          [itemId, name, description, JSON.stringify(image)]
         );
         console.log(`Item ${name} added to the database`);
       } catch (insertError) {
