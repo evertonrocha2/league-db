@@ -34,7 +34,7 @@ module.exports = {
   fetchPlayers: async (req, res) => {
     try {
       const response = await axios.get(
-        "https://americas.api.riotgames.com/lol/match/v5/matches/BR1_2966504938?api_key=RGAPI-f174e516-f9ff-41ae-9b28-31c1b666bc20"
+        "https://americas.api.riotgames.com/lol/match/v5/matches/BR1_2971670760?api_key=RGAPI-629b35f6-7ffb-4b9a-9a79-ba73b6f345d4"
       );
       const participants = response.data.info.participants.map(
         (participant) => ({
@@ -61,3 +61,39 @@ module.exports = {
     }
   },
 };
+
+const version = "14.14.1";
+const url = `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/item.json`;
+axios
+  .get(url)
+  .then((response) => {
+    const items = response.data.data;
+
+    axios
+      .get("http://localhost:3000/api/players")
+      .then((response) => {
+        const players = response.data;
+
+        players.forEach((player) => {
+          console.log(
+            `\nJogador: ${player.summonerName}, Campeão: ${player.championName}`
+          );
+
+          player.items.forEach((itemId) => {
+            const itemDetails = items[itemId];
+
+            if (itemDetails) {
+              console.log(`Nome do item: ${itemDetails.name}`);
+            } else {
+              console.log(`Item com ID ${itemId} não encontrado.`);
+            }
+          });
+        });
+      })
+      .catch((error) => {
+        console.error("Erro ao obter os dados dos jogadores:", error);
+      });
+  })
+  .catch((error) => {
+    console.error("Erro ao obter os dados dos itens:", error);
+  });
