@@ -61,39 +61,3 @@ module.exports = {
     }
   },
 };
-
-const version = "14.14.1";
-const url = `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/item.json`;
-axios
-  .get(url)
-  .then((response) => {
-    const items = response.data.data;
-
-    axios
-      .get("http://localhost:3000/api/players")
-      .then((response) => {
-        const players = response.data;
-
-        players.forEach((player) => {
-          console.log(
-            `\nJogador: ${player.summonerName}, Campeão: ${player.championName}`
-          );
-
-          player.items.forEach((itemId) => {
-            const itemDetails = items[itemId];
-
-            if (itemDetails) {
-              console.log(`Nome do item: ${itemDetails.name}`);
-            } else {
-              console.log(`Item com ID ${itemId} não encontrado.`);
-            }
-          });
-        });
-      })
-      .catch((error) => {
-        console.error("Erro ao obter os dados dos jogadores:", error);
-      });
-  })
-  .catch((error) => {
-    console.error("Erro ao obter os dados dos itens:", error);
-  });
